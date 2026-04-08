@@ -103,7 +103,7 @@ src/
 All diagrams are available in the [`img/`](img/) folder.
 
 ### ERD (Entity Relationship Diagram)
-![ERD](img/ERD_UKKN_Anyar.png)
+![ERD](img/ERD/ERD_UKKN.png)
 
 Table relationships:
 - **User → Kategori**: One admin can manage many categories (`created_by`, `update_by` FK)
@@ -113,7 +113,7 @@ Table relationships:
 - **Peminjaman → Riwayat Peminjaman**: Completed loans are archived to history
 
 ### DFD Level 0
-![DFD Level 0](img/dfd_level_0_dan_1.png)
+![DFD Level 0](img/DFD/'dfd level 0 dan 1.png')
 
 High-level system overview — 3 main processes:
 1. **Data Management** — Admin manages master data (users & books)
@@ -127,27 +127,27 @@ High-level system overview — 3 main processes:
 - Book data entry → Validation → Save to DB → Display
 
 **Process 2 — Loan**
-![DFD Level 1 Process 2](img/dfd_level_1_proses_2.png)
+![DFD Level 1 Proses 2](img/DFD/'dfd level 1 proses 2.png')
 - Book data flows from datastore → Book Selection → Loan Data Input → saved to Loan datastore
 - Loan data flows to Report (→ Admin) and Loan Slip (→ User)
 
 **Process 3 — Return**
-![DFD Level 1 Process 3](img/dfd_level_1_proses_3.png)
+![DFD Level 1 Proses 3](img/DFD/'dfd level 1 proses 3.png')
 - Return data from User → Input → saved to Return datastore
 - Data flows to Report (→ Admin) and Return Slip (→ User)
 
 ### DFD Level 2
-![DFD Level 2](img/dfd_level_2_new.png)
+![DFD Level 2](img/DFD/'dfd level 2 new.png')
 
 Detailed CRUD operations for: User Control, Book Control, Loan Data, Return Data.
 
 ### Flow of System (FOS)
-![FOS](img/Fos_ukk__terbaru.png)
+![FOS](img/FOS/Fos-new.png)
 
 Complete system flow from Start → Registration → Login → Role Check → Admin/User menu → Logout.
 
 ### Flowchart
-![Flowchart](img/Flowchart_UKKN_ASELI_drawio.png)
+![Flowchart](img/FLOWCHART/'Flowchart UKKN ASELI.drawio.png')
 
 Full process flow including decision logic (stock check, late check, extension check).
 
