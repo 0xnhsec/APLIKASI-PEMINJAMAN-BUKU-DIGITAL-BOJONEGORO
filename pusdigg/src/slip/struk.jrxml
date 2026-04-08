@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="387" pageHeight="607" columnWidth="347" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="41fcd73c-fc0a-4d3e-b7d8-4da4d6150cbe">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     transaksi.`id_transaksi` AS transaksi_id_transaksi,
+     transaksi.`id_user` AS transaksi_id_user,
+     transaksi.`name` AS transaksi_name,
+     transaksi.`id_petugas` AS transaksi_id_petugas,
+     transaksi.`nama_petugas` AS transaksi_nama_petugas,
+     transaksi.`id_barang` AS transaksi_id_barang,
+     transaksi.`name_barang` AS transaksi_name_barang,
+     transaksi.`harga` AS transaksi_harga,
+     transaksi.`Date` AS transaksi_Date,
+     transaksi.`kategori` AS transaksi_kategori,
+     transaksi.`jumlah_beli` AS transaksi_jumlah_beli,
+     transaksi.`kode_diskon` AS transaksi_kode_diskon,
+     transaksi.`nominal_diskon` AS transaksi_nominal_diskon,
+     transaksi.`All_harga_awal` AS transaksi_All_harga_awal,
+     transaksi.`All_harga_akhir` AS transaksi_All_harga_akhir,
+     transaksi.`total_harga` AS transaksi_total_harga,
+     transaksi.`bayar` AS transaksi_bayar,
+     transaksi.`kembalian` AS transaksi_kembalian,
+     transaksi.`pesan` AS transaksi_pesan
+FROM
+     `transaksi` transaksi]]>
+	</queryString>
+	<field name="transaksi_name" class="java.lang.String"/>
+	<field name="transaksi_nama_petugas" class="java.lang.String"/>
+	<field name="transaksi_name_barang" class="java.lang.String"/>
+	<field name="transaksi_harga" class="java.math.BigDecimal"/>
+	<field name="transaksi_Date" class="java.sql.Timestamp"/>
+	<field name="transaksi_kategori" class="java.lang.String"/>
+	<field name="transaksi_jumlah_beli" class="java.lang.Integer"/>
+	<field name="transaksi_kode_diskon" class="java.lang.String"/>
+	<field name="transaksi_nominal_diskon" class="java.lang.Integer"/>
+	<field name="transaksi_All_harga_awal" class="java.lang.Integer"/>
+	<field name="transaksi_All_harga_akhir" class="java.lang.Integer"/>
+	<field name="transaksi_total_harga" class="java.lang.Integer"/>
+	<field name="transaksi_bayar" class="java.lang.Integer"/>
+	<field name="transaksi_kembalian" class="java.lang.Integer"/>
+	<field name="transaksi_pesan" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="53" y="2" width="238" height="20" uuid="0ca5d10b-d010-4b51-a56f-755ece5065b3"/>
+				<textElement>
+					<font fontName="Monospaced" size="15" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Koperasi SMKN 4 Bojonegoro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="22" width="254" height="29" uuid="3b41c5ba-3d98-4b45-b608-27b88639d305"/>
+				<textElement>
+					<font fontName="Monospaced" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JL. RAYA SURABAYA BOJONEGORO, Sukowati, 
+ Kec. Kapas, Kab. Bojonegoro Prov. Jawa Timur ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="-11" y="-4" width="49" height="49" uuid="7c348ae5-8f3b-46a7-a78c-94cc2b8290a5"/>
+				<imageExpression><![CDATA["C:\\Users\\alpino\\Downloads\\Group 16.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="-22" y="59" width="394" height="20" uuid="6948e2b2-a124-4666-acf1-8bd4cb526d5e"/>
+				<text><![CDATA[===========================================================================]]></text>
+			</staticText>
+			<image>
+				<reportElement x="306" y="-4" width="41" height="63" uuid="67b9df6e-8d5d-49af-832f-d0c08b7ff881"/>
+				<imageExpression><![CDATA["C:\\Users\\alpino\\Downloads\\logo smkn 4 bojonegoro.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="81" splitType="Stretch">
+			<staticText>
+				<reportElement x="247" y="32" width="100" height="20" uuid="a8a66680-44e0-417b-834c-450a9857d13c"/>
+				<text><![CDATA[Pembeli :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="247" y="11" width="100" height="20" uuid="1b0075ad-296b-48b6-a2d8-c1835ce7b7de"/>
+				<text><![CDATA[Petugas :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-22" y="60" width="394" height="20" uuid="3fe52bde-9c43-47cc-b6a8-3cbbabc2d988"/>
+				<text><![CDATA[===========================================================================]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="291" y="12" width="100" height="20" uuid="72883df6-62fd-49a6-866c-1f160e417689"/>
+				<textFieldExpression><![CDATA[$F{transaksi_nama_petugas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="291" y="31" width="100" height="20" uuid="56f734b1-1fe8-46fb-b937-1e01386f0a48"/>
+				<textFieldExpression><![CDATA[$F{transaksi_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="12" width="100" height="20" uuid="2e9758d8-af28-4e26-8fd5-0b582280cc90"/>
+				<textFieldExpression><![CDATA[$F{transaksi_Date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="43" y="5" width="100" height="20" uuid="a070066e-b618-4e88-95f9-0bfdc45c6787"/>
+				<textFieldExpression><![CDATA[$F{transaksi_name_barang}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="166" y="5" width="15" height="20" uuid="ec5407aa-6326-4cd2-b074-0ddbb4dffe5b"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="174" y="5" width="100" height="20" uuid="bfee1f30-c507-44a4-a495-422753b21e54"/>
+				<textFieldExpression><![CDATA[$F{transaksi_jumlah_beli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="224" y="5" width="100" height="20" uuid="0a6e2e1d-f45f-4c07-a064-2ba4023c83bb"/>
+				<textFieldExpression><![CDATA[$F{transaksi_total_harga}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="173" splitType="Stretch">
+			<staticText>
+				<reportElement x="-22" y="0" width="394" height="13" uuid="a4c15602-1936-4404-b2e6-d0571316100b"/>
+				<text><![CDATA[=====================================================================]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="22" width="100" height="20" uuid="85f17690-3044-4b82-8d81-0276b8d65381"/>
+				<text><![CDATA[SUB TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="82" width="100" height="20" uuid="f650545c-2876-4a2d-bce9-143d68c3782e"/>
+				<text><![CDATA[BAYAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="122" width="100" height="20" uuid="254ebf0b-8fd2-4113-9847-47a424ec84e7"/>
+				<text><![CDATA[PESAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="102" width="100" height="20" uuid="7decd97f-353f-4a05-9ba2-33bf526b52e6"/>
+				<text><![CDATA[KEMBALI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="117" y="103" width="100" height="20" uuid="b9080d2d-d01e-42d9-8567-cb3ea48f128a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="62" width="100" height="20" uuid="4c25a6be-22be-49a8-9a2a-2750d7390009"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="42" width="100" height="20" uuid="7017c786-f4f2-4a2e-9d25-2be63ace9b24"/>
+				<text><![CDATA[DISKON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="117" y="42" width="100" height="20" uuid="36f0c3b1-7073-4f30-b415-74eefba74e34"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="117" y="82" width="100" height="20" uuid="e68d8992-4b79-48c4-a422-486cee106345"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="122" width="100" height="20" uuid="a2d1438a-1cff-4f2d-b8af-9c9b5ac8b00a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="22" width="100" height="20" uuid="b159022e-a3f2-4d41-b7c1-bb9cfbbbbaff"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="117" y="62" width="100" height="20" uuid="7c077995-9cf6-4b8b-bff3-f3997d343f13"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-22" y="160" width="394" height="13" uuid="6255beb6-cfc1-4652-a943-138f9aeda9d6"/>
+				<text><![CDATA[=====================================================================]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="264" y="21" width="153" height="20" uuid="32abd0b5-7697-4962-b183-9a7f81daba24"/>
+				<textFieldExpression><![CDATA[$F{transaksi_All_harga_awal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="265" y="42" width="152" height="20" uuid="a0ba66c1-8c3f-47c2-b6aa-a7a8c97717db"/>
+				<textFieldExpression><![CDATA[$F{transaksi_nominal_diskon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="264" y="62" width="153" height="20" uuid="07a1b700-a0c2-4952-9491-d19c5ac8d1af"/>
+				<textFieldExpression><![CDATA[$F{transaksi_All_harga_akhir}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="265" y="83" width="100" height="20" uuid="6a2c5ed7-cf36-4402-b0e2-fa972cb2f094"/>
+				<textFieldExpression><![CDATA[$F{transaksi_bayar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="265" y="103" width="126" height="20" uuid="22f8d051-8d7e-4460-b4e7-72b19e730463"/>
+				<textFieldExpression><![CDATA[$F{transaksi_kembalian}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="267" y="123" width="100" height="20" uuid="184ff52e-85b7-49a9-8a30-9eec4a6a2279"/>
+				<textFieldExpression><![CDATA[$F{transaksi_pesan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="59" y="0" width="265" height="38" uuid="4dd0b7c8-8aed-421f-9be4-4a160a331115"/>
+				<textElement>
+					<font fontName="Monospaced" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Terimakasih telah membeli barang 
+  di koperasi SMKN 4 Bojonegoro]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>
