@@ -113,7 +113,7 @@ Table relationships:
 - **Peminjaman → Riwayat Peminjaman**: Completed loans are archived to history
 
 ### DFD Level 0
-![DFD Level 0](img/DFD/'dfd level 0 dan 1.png')
+![DFD Level 0](img/DFD/dfd_level_0_dan_1.png)
 
 High-level system overview — 3 main processes:
 1. **Data Management** — Admin manages master data (users & books)
@@ -121,13 +121,13 @@ High-level system overview — 3 main processes:
 3. **Return Process** — User returns books, admin receives reports
 
 ### DFD Level 1
-
+![DFD Level 0](img/DFD/dfd_level_0_dan_1.png)
 **Process 1 — Data Management** (included in DFD Level 0 image)
 - User data entry → Validation → Save to DB → Display
 - Book data entry → Validation → Save to DB → Display
 
 **Process 2 — Loan**
-![DFD Level 1 Proses 2](img/DFD/'dfd level 1 proses 2.png')
+![DFD Level 1 Proses 2](img/DFD/dfd_level_1_proses_2.png)
 - Book data flows from datastore → Book Selection → Loan Data Input → saved to Loan datastore
 - Loan data flows to Report (→ Admin) and Loan Slip (→ User)
 
@@ -137,7 +137,7 @@ High-level system overview — 3 main processes:
 - Data flows to Report (→ Admin) and Return Slip (→ User)
 
 ### DFD Level 2
-![DFD Level 2](img/DFD/'dfd level 2 new.png')
+![DFD Level 2](img/DFD/dfd_level_2_new.png)
 
 Detailed CRUD operations for: User Control, Book Control, Loan Data, Return Data.
 
@@ -147,7 +147,7 @@ Detailed CRUD operations for: User Control, Book Control, Loan Data, Return Data
 Complete system flow from Start → Registration → Login → Role Check → Admin/User menu → Logout.
 
 ### Flowchart
-![Flowchart](img/FLOWCHART/'Flowchart UKKN ASELI.drawio.png')
+![Flowchart](img/FLOWCHART/Flowchart.png)
 
 Full process flow including decision logic (stock check, late check, extension check).
 

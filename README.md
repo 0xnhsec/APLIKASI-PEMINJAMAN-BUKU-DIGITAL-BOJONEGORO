@@ -113,7 +113,7 @@ Relasi antar tabel:
 - **Peminjaman → Riwayat Peminjaman**: Peminjaman yang selesai diarsipkan ke riwayat
 
 ### DFD Level 0
-![DFD Level 0](img/DFD/'dfd level 0 dan 1.png')
+![DFD Level 0](img/DFD/dfd_level_0_dan_1.png)
 
 Gambaran besar sistem — 3 proses utama:
 1. **Proses Pendataan** — Admin mengelola master data (user & buku)
@@ -121,23 +121,23 @@ Gambaran besar sistem — 3 proses utama:
 3. **Proses Pengembalian** — User mengembalikan buku, admin menerima laporan
 
 ### DFD Level 1
-
+![DFD Level 0](img/DFD/dfd_level_0_dan_1.png)
 **Proses 1 — Pendataan** (termasuk di DFD Level 0 image)
 - Pendataan User → Cek Kelengkapan → Simpan ke DB → Tampilkan
 - Pendataan Buku → Cek Kelengkapan → Simpan ke DB → Tampilkan
 
 **Proses 2 — Peminjaman**
-![DFD Level 1 Proses 2](img/DFD/'dfd level 1 proses 2.png')
+![DFD Level 1 Proses 2](img/DFD/dfd_level_1_proses_2.png)
 - Data Buku mengalir dari datastore → Memilih Buku → Input Data Peminjaman → simpan ke datastore Peminjaman
 - Data Peminjaman mengalir ke Laporan (→ Admin) dan Slip Peminjaman (→ User)
 
 **Proses 3 — Pengembalian**
-![DFD Level 1 Proses 3](img/DFD/'dfd level 1 proses 3.png')
+![DFD Level 1 Proses 3](img/DFD/dfd_level_1_proses_3.png)
 - Data Pengembalian dari User → Input → simpan ke datastore Pengembalian
 - Data mengalir ke Laporan (→ Admin) dan Slip Pengembalian (→ User)
 
 ### DFD Level 2
-![DFD Level 2](img/DFD/'dfd level 2 new.png')
+![DFD Level 2](img/DFD/dfd_level_2_new.png)
 
 Detail operasi CRUD untuk: Control User, Control Buku, Data Peminjaman, Data Pengembalian.
 
@@ -147,7 +147,7 @@ Detail operasi CRUD untuk: Control User, Control Buku, Data Peminjaman, Data Pen
 Alur sistem keseluruhan dari Mulai → Registrasi → Login → Cek Role → Admin/User menu → Logout.
 
 ### Flowchart
-![Flowchart](img/FLOWCHART/'Flowchart UKKN ASELI.drawio.png')
+![Flowchart](img/FLOWCHART/Flowchart.png)
 
 Alur proses lengkap termasuk decision logic (cek stok, cek keterlambatan, cek perpanjangan).
 
