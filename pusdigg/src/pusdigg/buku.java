@@ -799,30 +799,67 @@ bersih();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-
     int i = jTable1.getSelectedRow();
+    if (i == -1) {
+        JOptionPane.showMessageDialog(null, "Pilih buku terlebih dahulu!");
+        return;
+    }
+
     int id = Integer.parseInt(model.getValueAt(i, 0).toString());
+    String judulBuku = model.getValueAt(i, 3).toString();
+
+    // Cek apakah ada buku_item yang sedang dipinjam
+    try {
+        String cekPinjam = "SELECT COUNT(*) AS total FROM buku_item WHERE buku_id=? AND status='dipinjam'";
+        pst = conn.prepareStatement(cekPinjam);
+        pst.setInt(1, id);
+        rs = pst.executeQuery();
+        if (rs.next() && rs.getInt("total") > 0) {
+            JOptionPane.showMessageDialog(null,
+                "Buku '" + judulBuku + "' tidak bisa dihapus!\n" +
+                "Masih ada item buku yang sedang dipinjam.",
+                "Gagal Hapus", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+        return;
+    }
 
     int a = JOptionPane.showConfirmDialog(null,
-            "Yakin ingin menghapus?",
-            "Delete",
-            JOptionPane.YES_NO_OPTION);
+        "Yakin ingin menghapus buku '" + judulBuku + "'?\n" +
+        "Semua item fisik buku ini juga akan ikut terhapus.",
+        "Konfirmasi Delete", JOptionPane.YES_NO_OPTION);
 
     if (a == JOptionPane.YES_OPTION) {
         try {
-            String sql = "DELETE FROM buku WHERE Buku_id=?";
-            pst = conn.prepareStatement(sql);
+            conn.setAutoCommit(false);
+
+            // Hapus buku_item dulu
+            String hapusItem = "DELETE FROM buku_item WHERE buku_id=?";
+            pst = conn.prepareStatement(hapusItem);
             pst.setInt(1, id);
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Deleted");
+
+            // Baru hapus buku
+            String hapusBuku = "DELETE FROM buku WHERE Buku_id=?";
+            pst = conn.prepareStatement(hapusBuku);
+            pst.setInt(1, id);
+            pst.executeUpdate();
+
+            conn.commit();
+            JOptionPane.showMessageDialog(null, "✅ Buku berhasil dihapus!");
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            try { conn.rollback(); } catch (Exception ex) {}
+            JOptionPane.showMessageDialog(null, "Gagal hapus: " + e.getMessage());
+        } finally {
+            try { conn.setAutoCommit(true); } catch (Exception ex) {}
         }
     }
 
     getData();
     bersih();
-
     
     }//GEN-LAST:event_jButton6ActionPerformed
 

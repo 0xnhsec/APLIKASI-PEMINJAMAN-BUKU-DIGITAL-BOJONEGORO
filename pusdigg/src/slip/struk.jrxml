@@ -43,7 +43,12 @@ FROM
 	<field name="transaksi_kembalian" class="java.lang.Integer"/>
 	<field name="transaksi_pesan" class="java.lang.String"/>
 	<background>
-		<band splitType="Stretch"/>
+		<band height="607" splitType="Stretch">
+			<image scaleImage="RetainShape">
+				<reportElement mode="Transparent" x="74" y="154" width="200" height="200" uuid="w4t3rm4rk-0000-0000-0000-000000000001"/>
+				<imageExpression><![CDATA["C:\\Users\\syntax\\pusdigg\\src\\img\\BJN.png"]]></imageExpression>
+			</image>
+		</band>
 	</background>
 	<title>
 		<band height="79" splitType="Stretch">
@@ -64,7 +69,7 @@ FROM
 			</staticText>
 			<image>
 				<reportElement x="-11" y="-4" width="49" height="49" uuid="7c348ae5-8f3b-46a7-a78c-94cc2b8290a5"/>
-				<imageExpression><![CDATA["C:\\Users\\alpino\\Downloads\\Group 16.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["C:\\Users\\syntax\\pusdigg\\src\\img\\BJN.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="-22" y="59" width="394" height="20" uuid="6948e2b2-a124-4666-acf1-8bd4cb526d5e"/>
@@ -72,7 +77,7 @@ FROM
 			</staticText>
 			<image>
 				<reportElement x="306" y="-4" width="41" height="63" uuid="67b9df6e-8d5d-49af-832f-d0c08b7ff881"/>
-				<imageExpression><![CDATA["C:\\Users\\alpino\\Downloads\\logo smkn 4 bojonegoro.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["C:\\Users\\syntax\\pusdigg\\src\\img\\BJN.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

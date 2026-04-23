@@ -279,14 +279,37 @@ void getData() {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
     int i = jTable1.getSelectedRow();
+    if (i == -1) {
+        JOptionPane.showMessageDialog(null, "Pilih kategori terlebih dahulu!");
+        return;
+    }
+
     int id = Integer.parseInt(model.getValueAt(i, 0).toString());
+    String namaKategori = model.getValueAt(i, 1).toString();
+
+    // Cek apakah kategori masih dipakai buku
+    try {
+        String cek = "SELECT COUNT(*) AS total FROM buku WHERE kategori_id = ?";
+        pst = conn.prepareStatement(cek);
+        pst.setInt(1, id);
+        rs = pst.executeQuery();
+        if (rs.next() && rs.getInt("total") > 0) {
+            JOptionPane.showMessageDialog(null,
+                "Kategori '" + namaKategori + "' tidak bisa dihapus!\n" +
+                "Masih ada buku yang menggunakan kategori ini.\n" +
+                "Hapus atau pindahkan buku tersebut terlebih dahulu.",
+                "Gagal Hapus", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+        return;
+    }
 
     int a = JOptionPane.showConfirmDialog(null,
-            "Yakin ingin menghapus?",
-            "Delete",
-            JOptionPane.YES_NO_OPTION);
+        "Yakin ingin menghapus kategori '" + namaKategori + "'?",
+        "Konfirmasi Delete", JOptionPane.YES_NO_OPTION);
 
     if (a == JOptionPane.YES_OPTION) {
         try {
@@ -294,17 +317,14 @@ void getData() {
             pst = conn.prepareStatement(sql);
             pst.setInt(1, id);
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Deleted");
+            JOptionPane.showMessageDialog(null, "Kategori berhasil dihapus!");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
 
     getData();
     bersih();
-
-
-        // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void CariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CariActionPerformed

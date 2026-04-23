@@ -647,98 +647,286 @@ public class transaksi_admin extends javax.swing.JPanel {
 
     // ──────────────────────────────────────────────────────
     //  Slip peminjaman
-    // ──────────────────────────────────────────────────────
+    // ──────────────────────────────────────────────────────\
+    // private void cetakSlipPeminjaman() {
+    //    int row = jTable1.getSelectedRow();
+    //    if (row == -1) { JOptionPane.showMessageDialog(this, "Pilih data terlebih dahulu!"); return; }
+//
+     //   String kodePinjam = model.getValueAt(row, 1).toString();
+    //    String bukuId     = model.getValueAt(row, 2).toString();
+    //    String fullname   = model.getValueAt(row, 3).toString();
+    //    String judul      = model.getValueAt(row, 4).toString();
+    //    String kategori   = model.getValueAt(row, 5).toString();
+     //   int    jumlah     = Integer.parseInt(model.getValueAt(row, 6).toString());
+     //   String tglPinjam  = model.getValueAt(row, 7).toString();
+     //   String tglKembali = model.getValueAt(row, 8).toString();
+     //   String status     = model.getValueAt(row, 9).toString();
+
+      //  JFileChooser fc = new JFileChooser();
+      //  fc.setDialogTitle("Simpan Slip Peminjaman");
+      //  fc.setSelectedFile(new File("Slip_Peminjaman_" + kodePinjam + ".pdf"));
+      //  if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
+
+      //  try {
+      //      Document doc = buatDokumenPdf(fc.getSelectedFile().getAbsolutePath());
+
+        //    doc.add(new Paragraph("SLIP PEMINJAMAN BUKU").setBold().setFontSize(16).setMarginBottom(10));
+
+          //  Table info = new Table(2);
+          //  tambahBarisTabel(info, "Kode Peminjaman", kodePinjam);
+          //  tambahBarisTabel(info, "Nama Peminjam",   fullname);
+          //  tambahBarisTabel(info, "Status",          status);
+          //  doc.add(info);
+
+          //  doc.add(new Paragraph("\nDetail Buku:").setBold());
+          //  doc.add(buatTabelBuku(bukuId, judul, kategori, jumlah, tglKembali));
+          //  doc.add(new Paragraph("\nTanggal Pinjam: " + tglPinjam));
+
+          //  doc.close();
+          //  JOptionPane.showMessageDialog(this, "✅ Slip berhasil dibuat:\n" + fc.getSelectedFile().getAbsolutePath());
+     //   } catch (Exception e) {
+     //       tampilkanError("Gagal membuat slip peminjaman", e);
+     //   }
+   // }
     private void cetakSlipPeminjaman() {
-        int row = jTable1.getSelectedRow();
-        if (row == -1) { JOptionPane.showMessageDialog(this, "Pilih data terlebih dahulu!"); return; }
-
-        String kodePinjam = model.getValueAt(row, 1).toString();
-        String bukuId     = model.getValueAt(row, 2).toString();
-        String fullname   = model.getValueAt(row, 3).toString();
-        String judul      = model.getValueAt(row, 4).toString();
-        String kategori   = model.getValueAt(row, 5).toString();
-        int    jumlah     = Integer.parseInt(model.getValueAt(row, 6).toString());
-        String tglPinjam  = model.getValueAt(row, 7).toString();
-        String tglKembali = model.getValueAt(row, 8).toString();
-        String status     = model.getValueAt(row, 9).toString();
-
-        JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle("Simpan Slip Peminjaman");
-        fc.setSelectedFile(new File("Slip_Peminjaman_" + kodePinjam + ".pdf"));
-        if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
-
-        try {
-            Document doc = buatDokumenPdf(fc.getSelectedFile().getAbsolutePath());
-
-            doc.add(new Paragraph("SLIP PEMINJAMAN BUKU").setBold().setFontSize(16).setMarginBottom(10));
-
-            Table info = new Table(2);
-            tambahBarisTabel(info, "Kode Peminjaman", kodePinjam);
-            tambahBarisTabel(info, "Nama Peminjam",   fullname);
-            tambahBarisTabel(info, "Status",          status);
-            doc.add(info);
-
-            doc.add(new Paragraph("\nDetail Buku:").setBold());
-            doc.add(buatTabelBuku(bukuId, judul, kategori, jumlah, tglKembali));
-            doc.add(new Paragraph("\nTanggal Pinjam: " + tglPinjam));
-
-            doc.close();
-            JOptionPane.showMessageDialog(this, "✅ Slip berhasil dibuat:\n" + fc.getSelectedFile().getAbsolutePath());
-        } catch (Exception e) {
-            tampilkanError("Gagal membuat slip peminjaman", e);
-        }
+    int row = jTable1.getSelectedRow();
+    if (row == -1) { 
+        JOptionPane.showMessageDialog(this, "Pilih data terlebih dahulu!"); 
+        return; 
     }
+
+    String kodePinjam = model.getValueAt(row, 1).toString();
+    String noAnggota  = model.getValueAt(row, 2).toString();
+    String fullname   = model.getValueAt(row, 3).toString();
+    String judulBuku  = model.getValueAt(row, 4).toString();
+    String tglPinjam  = model.getValueAt(row, 7).toString();
+    String tglKembali = model.getValueAt(row, 8).toString();
+
+    List<String[]> listBuku = new ArrayList<>();
+    try {
+        String sql = "SELECT kd_bk1, kd_bk2, kd_bk3, jumlah_pinjam " +
+                     "FROM peminjaman WHERE kode_peminjaman = ?";
+        pst = conn.prepareStatement(sql);
+        pst.setString(1, kodePinjam);
+        rs = pst.executeQuery();
+        if (rs.next()) {
+            String[] buku = {
+                rs.getString("kd_bk1"),
+                rs.getString("kd_bk2"),
+                rs.getString("kd_bk3"),
+                rs.getString("jumlah_pinjam")
+            };
+            listBuku.add(buku);
+        }
+    } catch (Exception e) {
+        tampilkanError("Gagal ambil data buku", e);
+        return;
+    }
+
+        cetakSlipPeminjamanFormat(kodePinjam, noAnggota, fullname, judulBuku, listBuku, tglPinjam, tglKembali);
+    }
+
+    // ──────────────────────────────────────────────────────
+//  Slip peminjaman terformat (versi A6 dengan logo & TTD)
+// ──────────────────────────────────────────────────────
+private void cetakSlipPeminjamanFormat(
+        String kode, String noAnggota, String nama, String judulBuku,
+        List<String[]> daftarBuku,
+        String tglPinjam, String tglKembali) {
+    try {
+        if (daftarBuku == null || daftarBuku.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tidak ada data buku untuk dicetak!");
+            return;
+        }
+
+        // Path default ke Documents/slip-peminjaman
+        String documents = System.getProperty("user.home") + File.separator + "Documents";
+        String slipDir   = documents + File.separator + "slip-peminjaman";
+        File folder = new File(slipDir);
+        if (!folder.exists()) folder.mkdirs();
+        String path = slipDir + File.separator + "Slip_Peminjaman_" + kode + ".pdf";
+
+        PdfWriter   writer = new PdfWriter(path);
+        PdfDocument pdf    = new PdfDocument(writer);
+        Document    doc    = new Document(pdf, PageSize.A6);
+        doc.setMargins(10, 10, 10, 10);
+
+        PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+        PdfFont bold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+
+        // Warna biru untuk peminjaman
+        com.itextpdf.kernel.colors.Color BIRU =
+            new com.itextpdf.kernel.colors.DeviceRgb(30, 100, 200);
+        com.itextpdf.kernel.colors.Color BIRU_MUDA =
+            new com.itextpdf.kernel.colors.DeviceRgb(210, 225, 245);
+
+        // Header
+        Table header = new Table(new float[]{1, 3, 1});
+        header.setWidth(UnitValue.createPercentValue(100));
+        header.setBorder(com.itextpdf.layout.borders.Border.NO_BORDER);
+
+        Image logoKiri  = new Image(ImageDataFactory.create(
+            getClass().getResource("/img/logo.png"))).setHeight(35);
+        Image logoKanan = new Image(ImageDataFactory.create(
+            getClass().getResource("/img/logo.png"))).setHeight(35);
+
+        header.addCell(new Cell().add(logoKiri)
+            .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
+            .setVerticalAlignment(VerticalAlignment.MIDDLE));
+        header.addCell(new Cell().add(
+            new Paragraph()
+                .add(new Text("SLIP PEMINJAMAN\n").setFont(bold).setFontSize(12))
+                .add(new Text("PERPUSTAKAAN DIGITAL BOJONEGORO\n").setFont(bold).setFontSize(9))
+                .add(new Text("Jl. Raya Surabaya–Bojonegoro, Kapas").setFont(font).setFontSize(8))
+                .setTextAlignment(TextAlignment.CENTER))
+            .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
+            .setVerticalAlignment(VerticalAlignment.MIDDLE));
+        header.addCell(new Cell().add(logoKanan)
+            .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
+            .setTextAlignment(TextAlignment.RIGHT)
+            .setVerticalAlignment(VerticalAlignment.MIDDLE));
+
+        doc.add(header);
+        doc.add(new LineSeparator(new SolidLine(1f)));
+        doc.add(new Paragraph(" "));
+
+        // Info peminjam
+        Table info = new Table(new float[]{1, 2});
+        info.setWidth(UnitValue.createPercentValue(60));
+        info.addCell(infoCell("Kode Peminjaman", bold));
+        info.addCell(infoCell(": " + kode,        font));
+        info.addCell(infoCell("No Anggota",       font));
+        info.addCell(infoCell(": " + noAnggota,   font));
+        info.addCell(infoCell("Nama",             font));
+        info.addCell(infoCell(": " + nama,        font));
+        info.addCell(infoCell("Judul Buku",       font));
+        info.addCell(infoCell(": " + judulBuku,   font));
+        info.addCell(infoCell("Tgl Pinjam",       font));
+        info.addCell(infoCell(": " + tglPinjam,   font));
+        info.addCell(infoCell("Tgl Kembali",      font));
+        info.addCell(infoCell(": " + tglKembali,  font));
+        doc.add(info);
+        doc.add(new Paragraph(" "));
+
+        // Tabel kode buku
+        Table tabel = new Table(new float[]{2, 2, 2, 1});
+        tabel.setWidth(UnitValue.createPercentValue(100));
+
+        String[] headers = {"Kode Buku 1", "Kode Buku 2", "Kode Buku 3", "Jml Pinjam"};
+        for (String h : headers) {
+            tabel.addHeaderCell(
+                new Cell().add(new Paragraph(h).setFont(bold).setFontSize(7)
+                    .setFontColor(ColorConstants.WHITE))
+                .setBackgroundColor(BIRU)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setPadding(5)
+            );
+        }
+
+        for (int i = 0; i < daftarBuku.size(); i++) {
+            String[] buku = daftarBuku.get(i);
+            com.itextpdf.kernel.colors.Color bg =
+                (i % 2 == 0) ? ColorConstants.WHITE : BIRU_MUDA;
+            for (String col : buku) {
+                tabel.addCell(
+                    new Cell().add(new Paragraph(col == null ? "N/A" : col)
+                        .setFont(font).setFontSize(7))
+                    .setBackgroundColor(bg)
+                    .setPadding(4)
+                );
+            }
+        }
+
+        doc.add(tabel);
+        doc.add(new Paragraph(" ").setMarginBottom(15));
+
+        doc.add(new Paragraph("\"Terima kasih telah meminjam.\nMohon dikembalikan tepat waktu.\"")
+            .setFont(font).setFontSize(7).setItalic());
+        doc.add(new Paragraph(" "));
+
+        // TTD
+        Image ttd = new Image(ImageDataFactory.create(
+            getClass().getResource("/img/ttd.png")));
+        ttd.setWidth(50).setHorizontalAlignment(HorizontalAlignment.RIGHT);
+        doc.add(ttd);
+        doc.add(new Paragraph("Ayanagi Noshiro S.KOM")
+            .setFont(bold).setFontSize(8)
+            .setTextAlignment(TextAlignment.RIGHT));
+        doc.add(new Paragraph("Admin Perpustakaan Digital Bojonegoro")
+            .setFont(font).setFontSize(7).setItalic()
+            .setTextAlignment(TextAlignment.RIGHT));
+
+        doc.close();
+        Desktop.getDesktop().open(new File(path));
+
+    } catch (Exception e) {
+        tampilkanError("Gagal cetak slip format", e);
+    }
+}
 
     // ──────────────────────────────────────────────────────
     //  Slip pengembalian
     // ──────────────────────────────────────────────────────
     private void cetakSlipPengembalian() {
-        int row = jTable1.getSelectedRow();
-        if (row == -1) { JOptionPane.showMessageDialog(this, "Pilih data terlebih dahulu!"); return; }
-
-        String status = model.getValueAt(row, 9).toString().trim().toLowerCase();
-        if (!status.equals("selesai")) {
-            JOptionPane.showMessageDialog(this,
-                "Slip pengembalian hanya bisa dibuat jika status selesai.\nStatus saat ini: " + status.toUpperCase());
-            return;
-        }
-
-        String kodePinjam = model.getValueAt(row, 1).toString();
-        String bukuId     = model.getValueAt(row, 2).toString();
-        String fullname   = model.getValueAt(row, 3).toString();
-        String judul      = model.getValueAt(row, 4).toString();
-        String kategori   = model.getValueAt(row, 5).toString();
-        int    jumlah     = Integer.parseInt(model.getValueAt(row, 6).toString());
-        String tglPinjam  = model.getValueAt(row, 7).toString();
-        String tglKembali = model.getValueAt(row, 8).toString();
-
-        JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle("Simpan Slip Pengembalian");
-        fc.setSelectedFile(new File("Slip_Pengembalian_" + kodePinjam + ".pdf"));
-        if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
-
-        try {
-            Document doc = buatDokumenPdf(fc.getSelectedFile().getAbsolutePath());
-
-            doc.add(new Paragraph("SLIP PENGEMBALIAN BUKU").setBold().setFontSize(16).setMarginBottom(10));
-
-            Table info = new Table(2);
-            tambahBarisTabel(info, "Kode Peminjaman", kodePinjam);
-            tambahBarisTabel(info, "Nama Peminjam",   fullname);
-            tambahBarisTabel(info, "Status",          "Selesai");
-            doc.add(info);
-
-            doc.add(new Paragraph("\nDetail Buku:").setBold());
-            doc.add(buatTabelBuku(bukuId, judul, kategori, jumlah, tglKembali));
-            doc.add(new Paragraph("\nTanggal Pinjam: " + tglPinjam));
-            doc.add(new Paragraph("Tanggal Pengembalian: " + LocalDate.now()));
-
-            doc.close();
-            JOptionPane.showMessageDialog(this, "✅ Slip pengembalian berhasil dibuat:\n" + fc.getSelectedFile().getAbsolutePath());
-        } catch (Exception e) {
-            tampilkanError("Gagal membuat slip pengembalian", e);
-        }
+    int row = jTable1.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Pilih data terlebih dahulu!");
+        return;
     }
+
+    String status = model.getValueAt(row, 9).toString().trim().toLowerCase();
+    if (!status.equals("selesai")) {
+        JOptionPane.showMessageDialog(this,
+            "Slip pengembalian hanya bisa dibuat jika status selesai.\nStatus saat ini: " + status.toUpperCase());
+        return;
+    }
+
+    String kodePinjam = model.getValueAt(row, 1).toString();
+    String noAnggota  = model.getValueAt(row, 2).toString();
+    String fullname   = model.getValueAt(row, 3).toString();
+    String judulBuku  = model.getValueAt(row, 4).toString();
+    String tglPinjam  = model.getValueAt(row, 7).toString();
+    String tglKembali = model.getValueAt(row, 8).toString();
+
+    // Ambil denda dari DB
+    String dendaStr = "Rp0";
+    try {
+    String sql = "SELECT denda FROM peminjaman WHERE kode_peminjaman = ? LIMIT 1";
+        pst = conn.prepareStatement(sql);
+        pst.setString(1, kodePinjam);
+        rs = pst.executeQuery();
+        if (rs.next()) {
+            int denda = rs.getInt("denda");
+            dendaStr = denda > 0 ? "Rp" + String.format("%,d", denda) : "Rp0 (Tidak ada keterlambatan)";
+        }
+    } catch (Exception e) {
+        // abaikan, denda tetap Rp0
+    }
+
+    // Ambil kode buku
+    List<String[]> listBuku = new ArrayList<>();
+    try {
+        String sql = "SELECT kd_bk1, kd_bk2, kd_bk3, jumlah_pinjam FROM peminjaman WHERE kode_peminjaman = ? LIMIT 1";
+        pst = conn.prepareStatement(sql);
+        pst.setString(1, kodePinjam);
+        rs = pst.executeQuery();
+        if (rs.next()) {
+            String[] buku = {
+                rs.getString("kd_bk1"),
+                rs.getString("kd_bk2"),
+                rs.getString("kd_bk3"),
+                rs.getString("jumlah_pinjam")
+            };
+            listBuku.add(buku);
+        }
+    } catch (Exception e) {
+        tampilkanError("Gagal ambil data buku", e);
+        return;
+    }
+
+    cetakSlipPengembalianFormat(kodePinjam, noAnggota, fullname, judulBuku,
+                                listBuku, tglPinjam, tglKembali, dendaStr);
+}
 
     // ──────────────────────────────────────────────────────
     //  Perpanjangan
@@ -893,102 +1081,152 @@ public class transaksi_admin extends javax.swing.JPanel {
     }
 
     // ──────────────────────────────────────────────────────
-    //  Slip terformat (versi A6 dengan logo & TTD)
-    // ──────────────────────────────────────────────────────
-    private void cetakSlipPeminjamanFormat(
-            String kode, String noAnggota, String nama,
-            List<String[]> daftarBuku,
-            String tglPinjam, String tglKembali) {
-        try {
-            if (daftarBuku == null || daftarBuku.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Tidak ada data buku untuk dicetak!");
-                return;
-            }
-
-            String path = "Slip_Peminjaman_" + kode + ".pdf";
-            PdfWriter   writer = new PdfWriter(path);
-            PdfDocument pdf    = new PdfDocument(writer);
-            Document    doc    = new Document(pdf, PageSize.A6);
-            doc.setMargins(10, 10, 10, 10);
-
-            PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
-            PdfFont bold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
-
-            // Header
-            Table header = new Table(new float[]{1, 3, 1});
-            header.setWidth(UnitValue.createPercentValue(100));
-            header.setBorder(com.itextpdf.layout.borders.Border.NO_BORDER);
-
-            Image logoKiri  = new Image(ImageDataFactory.create(getClass().getResource("/img/logo.png"))).setHeight(35);
-            Image logoKanan = new Image(ImageDataFactory.create(getClass().getResource("/img/logo.png"))).setHeight(35);
-
-            header.addCell(new Cell().add(logoKiri)
-                .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
-                .setVerticalAlignment(VerticalAlignment.MIDDLE));
-
-            header.addCell(new Cell().add(
-                new Paragraph()
-                    .add(new Text("SLIP PEMINJAMAN\n").setFont(bold).setFontSize(12))
-                    .add(new Text("PERPUSTAKAAN SMK NEGERI 4 BOJONEGORO\n").setFont(bold).setFontSize(9))
-                    .add(new Text("Jl. Raya Surabaya–Bojonegoro, Kapas").setFont(font).setFontSize(8))
-                    .setTextAlignment(TextAlignment.CENTER))
-                .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
-                .setVerticalAlignment(VerticalAlignment.MIDDLE));
-
-            header.addCell(new Cell().add(logoKanan)
-                .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
-                .setTextAlignment(TextAlignment.RIGHT)
-                .setVerticalAlignment(VerticalAlignment.MIDDLE));
-
-            doc.add(header);
-            doc.add(new LineSeparator(new SolidLine(1f)));
-            doc.add(new Paragraph(" "));
-
-            // Info peminjam
-            Table info = new Table(new float[]{1, 2});
-            info.setWidth(UnitValue.createPercentValue(60));
-            info.addCell(infoCell("Kode Peminjaman", bold)); info.addCell(infoCell(": " + kode, font));
-            info.addCell(infoCell("No Anggota",      font)); info.addCell(infoCell(": " + noAnggota, font));
-            info.addCell(infoCell("Nama",            font)); info.addCell(infoCell(": " + nama, font));
-            info.addCell(infoCell("Tgl Pinjam",      font)); info.addCell(infoCell(": " + tglPinjam, font));
-            info.addCell(infoCell("Tgl Kembali",     font)); info.addCell(infoCell(": " + tglKembali, font));
-            doc.add(info);
-            doc.add(new Paragraph(" "));
-
-            // Tabel buku
-            Table tabel = new Table(new float[]{3, 1, 1, 1, 1});
-            tabel.setWidth(UnitValue.createPercentValue(100));
-            tabel.addHeaderCell(headerCell("Judul", bold));
-            tabel.addHeaderCell(headerCell("Jml",   bold));
-            tabel.addHeaderCell(headerCell("K1",    bold));
-            tabel.addHeaderCell(headerCell("K2",    bold));
-            tabel.addHeaderCell(headerCell("K3",    bold));
-
-            for (int i = 0; i < daftarBuku.size(); i++) {
-                String[] buku = daftarBuku.get(i);
-                Color bg = (i % 2 == 0) ? ColorConstants.WHITE : ColorConstants.LIGHT_GRAY;
-                for (String col : buku) tabel.addCell(bodyCell(safe(col), font).setBackgroundColor(bg));
-            }
-            doc.add(tabel);
-            doc.add(new Paragraph(" ").setMarginBottom(15));
-
-            doc.add(new Paragraph("\"Terima kasih telah meminjam.\nMohon dikembalikan tepat waktu.\"")
-                .setFont(font).setFontSize(7).setItalic());
-            doc.add(new Paragraph(" "));
-
-            Image ttd = new Image(ImageDataFactory.create(getClass().getResource("/img/ttd.png")));
-            ttd.setWidth(50).setHorizontalAlignment(HorizontalAlignment.RIGHT);
-            doc.add(ttd);
-            doc.add(new Paragraph("Siti Rini Anti S.Pd").setFont(bold).setFontSize(8).setTextAlignment(TextAlignment.RIGHT));
-            doc.add(new Paragraph("Admin Perpustakaan").setFont(font).setFontSize(7).setItalic().setTextAlignment(TextAlignment.RIGHT));
-
-            doc.close();
-            Desktop.getDesktop().open(new File(path));
-
-        } catch (Exception e) {
-            tampilkanError("Gagal cetak slip format", e);
+//  Slip pengembalian terformat (versi A6 dengan logo & TTD)
+// ──────────────────────────────────────────────────────
+private void cetakSlipPengembalianFormat(
+        String kode, String noAnggota, String nama, String judulBuku,
+        List<String[]> daftarBuku,
+        String tglPinjam, String tglKembali, String denda) {
+    try {
+        if (daftarBuku == null || daftarBuku.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tidak ada data buku untuk dicetak!");
+            return;
         }
+
+        // Path default ke Documents/slip-pengembalian
+        String documents = System.getProperty("user.home") + File.separator + "Documents";
+        String slipDir   = documents + File.separator + "slip-pengembalian";
+        File folder = new File(slipDir);
+        if (!folder.exists()) folder.mkdirs();
+
+        String path = slipDir + File.separator + "Slip_Pengembalian_" + kode + ".pdf";
+
+        PdfWriter   writer = new PdfWriter(path);
+        PdfDocument pdf    = new PdfDocument(writer);
+        Document    doc    = new Document(pdf, PageSize.A6);
+        doc.setMargins(10, 10, 10, 10);
+
+        PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+        PdfFont bold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+
+        // ── WARNA HIJAU untuk pengembalian ──
+        com.itextpdf.kernel.colors.Color HIJAU = 
+            new com.itextpdf.kernel.colors.DeviceRgb(39, 174, 96);
+        com.itextpdf.kernel.colors.Color HIJAU_MUDA = 
+            new com.itextpdf.kernel.colors.DeviceRgb(212, 237, 218);
+
+        // Header
+        Table header = new Table(new float[]{1, 3, 1});
+        header.setWidth(UnitValue.createPercentValue(100));
+        header.setBorder(com.itextpdf.layout.borders.Border.NO_BORDER);
+
+        Image logoKiri  = new Image(ImageDataFactory.create(
+            getClass().getResource("/img/logo.png"))).setHeight(35);
+        Image logoKanan = new Image(ImageDataFactory.create(
+            getClass().getResource("/img/logo.png"))).setHeight(35);
+
+        header.addCell(new Cell().add(logoKiri)
+            .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
+            .setVerticalAlignment(VerticalAlignment.MIDDLE));
+
+        header.addCell(new Cell().add(
+            new Paragraph()
+                .add(new Text("SLIP PENGEMBALIAN\n").setFont(bold).setFontSize(12))
+                .add(new Text("PERPUSTAKAAN DIGITAL BOJONEGORO\n").setFont(bold).setFontSize(9))
+                .add(new Text("Jl. Raya Surabaya–Bojonegoro, Kapas").setFont(font).setFontSize(8))
+                .setTextAlignment(TextAlignment.CENTER))
+            .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
+            .setVerticalAlignment(VerticalAlignment.MIDDLE));
+
+        header.addCell(new Cell().add(logoKanan)
+            .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
+            .setTextAlignment(TextAlignment.RIGHT)
+            .setVerticalAlignment(VerticalAlignment.MIDDLE));
+
+        doc.add(header);
+        doc.add(new LineSeparator(new SolidLine(1f)));
+        doc.add(new Paragraph(" "));
+
+        // Info pengembalian
+        Table info = new Table(new float[]{1, 2});
+        info.setWidth(UnitValue.createPercentValue(60));
+        info.addCell(infoCell("Kode Peminjaman",  bold)); 
+        info.addCell(infoCell(": " + kode,         font));
+        info.addCell(infoCell("No Anggota",        font)); 
+        info.addCell(infoCell(": " + noAnggota,    font));
+        info.addCell(infoCell("Nama",              font)); 
+        info.addCell(infoCell(": " + nama,         font));
+        info.addCell(infoCell("Judul Buku",        font)); 
+        info.addCell(infoCell(": " + judulBuku,    font));
+        info.addCell(infoCell("Tgl Pinjam",        font)); 
+        info.addCell(infoCell(": " + tglPinjam,    font));
+        info.addCell(infoCell("Tgl Kembali",       font)); 
+        info.addCell(infoCell(": " + tglKembali,   font));
+        info.addCell(infoCell("Tgl Dikembalikan",  font)); 
+        info.addCell(infoCell(": " + LocalDate.now(), font));
+        info.addCell(infoCell("Denda",             bold)); 
+        info.addCell(infoCell(": " + denda,        font));
+        info.addCell(infoCell("Status",            bold)); 
+        info.addCell(infoCell(": SELESAI ✓",       font));
+        doc.add(info);
+        doc.add(new Paragraph(" "));
+
+        // Tabel kode buku — header HIJAU
+        Table tabel = new Table(new float[]{2, 2, 2, 1});
+        tabel.setWidth(UnitValue.createPercentValue(100));
+
+        // Header hijau
+        String[] headers = {"Kode Buku 1", "Kode Buku 2", "Kode Buku 3", "Jml Pinjam"};
+        for (String h : headers) {
+            tabel.addHeaderCell(
+                new Cell().add(new Paragraph(h).setFont(bold).setFontSize(7)
+                    .setFontColor(com.itextpdf.kernel.colors.ColorConstants.WHITE))
+                .setBackgroundColor(HIJAU)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setPadding(5)
+            );
+        }
+
+        for (int i = 0; i < daftarBuku.size(); i++) {
+            String[] buku = daftarBuku.get(i);
+            com.itextpdf.kernel.colors.Color bg = 
+                (i % 2 == 0) ? com.itextpdf.kernel.colors.ColorConstants.WHITE : HIJAU_MUDA;
+            for (String col : buku) {
+                tabel.addCell(
+                    new Cell().add(new Paragraph(col == null ? "N/A" : col)
+                        .setFont(font).setFontSize(7))
+                    .setBackgroundColor(bg)
+                    .setPadding(4)
+                );
+            }
+        }
+
+        doc.add(tabel);
+        doc.add(new Paragraph(" ").setMarginBottom(15));
+
+        doc.add(new Paragraph("\"Terima kasih telah mengembalikan buku\ntepat waktu. Sampai jumpa kembali!\"")
+            .setFont(font).setFontSize(7).setItalic());
+        doc.add(new Paragraph(" "));
+
+        // TTD
+        Image ttd = new Image(ImageDataFactory.create(
+            getClass().getResource("/img/ttd.png")));
+        ttd.setWidth(50).setHorizontalAlignment(HorizontalAlignment.RIGHT);
+        doc.add(ttd);
+        doc.add(new Paragraph("Ayanagi Noshiro S.KOM")
+            .setFont(bold).setFontSize(8)
+            .setTextAlignment(TextAlignment.RIGHT));
+        doc.add(new Paragraph("Admin Perpustakaan Digital Bojonegoro")
+            .setFont(font).setFontSize(7).setItalic()
+            .setTextAlignment(TextAlignment.RIGHT));
+
+        doc.close();
+        Desktop.getDesktop().open(new File(path));
+
+    } catch (Exception e) {
+        tampilkanError("Gagal cetak slip pengembalian format", e);
     }
+}
 
     // ──────────────────────────────────────────────────────
     //  Helper PDF

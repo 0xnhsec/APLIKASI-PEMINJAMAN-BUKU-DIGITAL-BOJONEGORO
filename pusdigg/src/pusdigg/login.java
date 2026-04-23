@@ -33,6 +33,7 @@ public class login extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -68,6 +69,14 @@ public class login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 920, 150, -1));
+
+        jLabel1.setText("https://github.com/0xnhsec/APLIKASI-PEMINJAMAN-BUKU-DIGITAL-BOJONEGORO.git");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 490, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/1920/Login.png"))); // NOI18N
         jLabel4.setText("aaaaaaaaaaaaaa");
@@ -160,6 +169,17 @@ public class login extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    try {
+        java.awt.Desktop.getDesktop().browse(
+            new java.net.URI("https://github.com/0xnhsec/APLIKASI-PEMINJAMAN-BUKU-DIGITAL-BOJONEGORO.git")
+        );
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, 
+            "Tidak bisa membuka browser: " + e.getMessage());
+    }       
+    }//GEN-LAST:event_jLabel1MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -198,6 +218,7 @@ public class login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;

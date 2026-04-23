@@ -485,6 +485,78 @@ private void exportToExcel() {
     }
 }
 
+/**
+ * Generate buku_item otomatis berdasarkan stok di tabel buku
+ * Hanya generate untuk buku yang belum punya buku_item
+ */
+private void generateBukuItem() {
+    int confirm = JOptionPane.showConfirmDialog(null,
+        "Generate item buku otomatis berdasarkan stok?\n" +
+        "Hanya buku yang belum punya item yang akan di-generate.",
+        "Generate Buku Item", JOptionPane.YES_NO_OPTION);
+
+    if (confirm != JOptionPane.YES_OPTION) return;
+
+    try {
+        // Ambil semua buku yang belum punya buku_item
+        String sqlBuku = 
+            "SELECT b.Buku_id, b.Judul, b.stok " +
+            "FROM buku b " +
+            "WHERE b.stok > 0 " +
+            "AND (SELECT COUNT(*) FROM buku_item bi WHERE bi.buku_id = b.Buku_id) = 0";
+
+        pst = conn.prepareStatement(sqlBuku);
+        rs = pst.executeQuery();
+
+        int totalGenerated = 0;
+
+        while (rs.next()) {
+            int bukuId = rs.getInt("Buku_id");
+            String judul = rs.getString("Judul");
+            int stok = rs.getInt("stok");
+
+            // Generate kode unik dan insert per item
+            for (int i = 1; i <= stok; i++) {
+                // Ambil kode terakhir
+                String sqlKode = "SELECT MAX(CAST(SUBSTRING(kode_buku, 4) AS UNSIGNED)) AS maxKode FROM buku_item";
+                PreparedStatement pstKode = conn.prepareStatement(sqlKode);
+                ResultSet rsKode = pstKode.executeQuery();
+                int lastKode = 0;
+                if (rsKode.next()) lastKode = rsKode.getInt("maxKode");
+                rsKode.close();
+                pstKode.close();
+
+                String kode = String.format("BK-%04d", lastKode + 1);
+
+                String sqlInsert = "INSERT INTO buku_item (buku_id, kode_buku, status) VALUES (?, ?, 'tersedia')";
+                PreparedStatement pstInsert = conn.prepareStatement(sqlInsert);
+                pstInsert.setInt(1, bukuId);
+                pstInsert.setString(2, kode);
+                pstInsert.executeUpdate();
+                pstInsert.close();
+
+                totalGenerated++;
+            }
+        }
+
+        rs.close();
+        pst.close();
+
+        JOptionPane.showMessageDialog(null,
+            "✅ Berhasil generate " + totalGenerated + " item buku baru!",
+            "Sukses", JOptionPane.INFORMATION_MESSAGE);
+
+        getData();
+        hitungStatistik();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null,
+            "Gagal generate: " + e.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+}
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
